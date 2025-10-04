@@ -1,7 +1,15 @@
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+
 export default function Home() {
   return (
-    <div className='grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20'>
-      Home Page
+    <div className='mx-auto my-6 max-w-md px-4'>
+      <div className='space-y-6 text-center'>
+        <h1 className='text-3xl font-bold'>Welcome to Our App</h1>
+        <Button asChild size='lg'>
+          <Link href='/auth/login'>Sign In/Sign Up</Link>
+        </Button>
+      </div>
     </div>
   )
 }
