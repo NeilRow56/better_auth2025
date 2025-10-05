@@ -10,7 +10,7 @@ function AuthFormLayout() {
   const [activeTab, setActiveTab] = useState('login')
 
   return (
-    <div className='mt-24 flex'>
+    <div className='mt-48 flex'>
       <div className='bg-card w-full max-w-md rounded-lg border p-5 shadow-sm'>
         {/* <h1 className="text-2xl font-bold text-center mb-6">Welcome!</h1> */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className='w-full'>

@@ -7,7 +7,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { useForm } from 'react-hook-form'
 import { Loader2 } from 'lucide-react'
 
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -19,6 +18,7 @@ import {
 } from '@/components/ui/form'
 
 import { PasswordInput } from './password-input'
+import { InputWithLabel } from '@/components/form/input-with-label'
 
 const loginSchema = z.object({
   email: z.email('Please enter a valid email address!'),
@@ -57,22 +57,11 @@ export default function LoginForm() {
                 </p>
               </div>
               <div className='grid gap-3'>
-                <FormField
-                  control={form.control}
-                  name='email'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          type='email'
-                          placeholder='e.g. m@example.com'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                <InputWithLabel
+                  fieldTitle='Email'
+                  nameInSchema='email'
+                  type='email'
+                  autoComplete='email webauthn'
                 />
               </div>
               <div className='grid gap-3'>

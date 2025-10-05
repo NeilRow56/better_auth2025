@@ -4,7 +4,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@/components/ui/input'
+
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -17,6 +17,7 @@ import {
 import { Card, CardContent } from '@/components/ui/card'
 import { Loader2 } from 'lucide-react'
 import { PasswordInput } from './password-input'
+import { InputWithLabel } from '@/components/form/input-with-label'
 
 // interface RegisterFormProps {
 //   onSuccess?: () => void
@@ -75,41 +76,13 @@ export default function SignUpForm() {
                 </p>
               </div>
               <div className='grid gap-3'>
-                <FormField
-                  control={form.control}
-                  name='name'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className='text-primary font-bold'>
-                        Name
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder='e.g. John Doe' {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <InputWithLabel fieldTitle='Name' nameInSchema='name' />
               </div>
               <div className='grid gap-3'>
-                <FormField
-                  control={form.control}
-                  name='email'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className='text-primary font-bold'>
-                        Email
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type='email'
-                          placeholder='e.g. m@example.com'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                <InputWithLabel
+                  fieldTitle='Email'
+                  nameInSchema='email'
+                  type='email'
                 />
               </div>
               <div className='grid gap-3'>
