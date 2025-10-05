@@ -21,11 +21,13 @@ import { InputWithLabel } from '@/components/form/input-with-label'
 import { LoadingSwap } from '@/components/shared/loading-swap'
 import { signUp } from '@/server/users'
 import { toast } from 'sonner'
+import { NumberInput } from '@/components/form/number-input'
 
 const registerSchema = z
   .object({
     name: z.string().min(3, 'Name must be at least 3 characters'),
     email: z.email('Please enter a valid email address!'),
+    age: z.number().int().min(18).max(99),
     password: z.string().min(6, 'Password must be at least 6 characters'),
     confirmPassword: z.string().min(6, {
       message: 'Passwords do not match'
@@ -64,7 +66,8 @@ export default function SignUpForm({ onSuccess }: RegisterFormProps) {
     const { success, message } = await signUp(
       values.email,
       values.password,
-      values.name
+      values.name,
+      values.age
     )
 
     if (success) {
@@ -100,6 +103,21 @@ export default function SignUpForm({ onSuccess }: RegisterFormProps) {
                   fieldTitle='Email'
                   nameInSchema='email'
                   type='email'
+                />
+              </div>
+              <div className='grid gap-3'>
+                <FormField
+                  control={form.control}
+                  name='age'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Age</FormLabel>
+                      <FormControl>
+                        <NumberInput {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
               <div className='grid gap-3'>
