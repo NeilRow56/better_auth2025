@@ -1,13 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import SignUpForm from './sign-up-form'
 import SignInForm from './sign-in-form'
+import { getSession } from '@/lib/auth-client'
+import { useRouter } from 'next/navigation'
 
 function AuthFormLayout() {
   const [activeTab, setActiveTab] = useState('login')
+  const router = useRouter()
+  useEffect(() => {
+    getSession().then(session => {
+      if (session.data !== null) router.push('/')
+    })
+  }, [router])
 
   return (
     <div className='mt-48 flex'>
