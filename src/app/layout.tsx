@@ -49,7 +49,7 @@ export default function RootLayout({
               unstyled: true,
               classNames: {
                 error: 'text-red-600 bg-white border rounded-md p-2',
-                success: 'text-gray-900 bg-white border rounded-md p-2',
+                success: 'text-blue-600 bg-white border rounded-md p-2',
                 warning: 'text-yellow-700 bg-white border rounded-md p-2',
                 info: 'text-blue-700 bg-white border rounded-md p-2'
               }

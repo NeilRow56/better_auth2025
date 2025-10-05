@@ -5,7 +5,6 @@ import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Card, CardContent } from '@/components/ui/card'
 import { useForm } from 'react-hook-form'
-import { Loader2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -19,6 +18,10 @@ import {
 
 import { PasswordInput } from './password-input'
 import { InputWithLabel } from '@/components/form/input-with-label'
+import { LoadingSwap } from '@/components/shared/loading-swap'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import { signIn } from '@/server/users'
 
 const loginSchema = z.object({
   email: z.email('Please enter a valid email address!'),
@@ -28,6 +31,8 @@ const loginSchema = z.object({
 type LoginSchemaType = z.infer<typeof loginSchema>
 
 export default function LoginForm() {
+  const router = useRouter()
+
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -39,7 +44,14 @@ export default function LoginForm() {
   const { isSubmitting } = form.formState
 
   async function onSubmit(values: LoginSchemaType) {
-    console.log(values)
+    const { success, message } = await signIn(values.email, values.password)
+
+    if (success) {
+      toast.success(message as string)
+      router.push('/admin')
+    } else {
+      toast.error(message as string)
+    }
   }
   return (
     <Card className='overflow-hidden p-0'>
@@ -88,11 +100,7 @@ export default function LoginForm() {
                 className='w-full cursor-pointer dark:bg-blue-600 dark:text-white'
                 disabled={isSubmitting}
               >
-                {isSubmitting ? (
-                  <Loader2 className='size-4 animate-spin' />
-                ) : (
-                  'Login'
-                )}
+                <LoadingSwap isLoading={isSubmitting}>Sign In</LoadingSwap>
               </Button>
             </div>
           </form>

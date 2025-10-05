@@ -15,13 +15,12 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Card, CardContent } from '@/components/ui/card'
-import { Loader2 } from 'lucide-react'
+
 import { PasswordInput } from './password-input'
 import { InputWithLabel } from '@/components/form/input-with-label'
-
-// interface RegisterFormProps {
-//   onSuccess?: () => void
-// }
+import { LoadingSwap } from '@/components/shared/loading-swap'
+import { signUp } from '@/server/users'
+import { toast } from 'sonner'
 
 const registerSchema = z
   .object({
@@ -45,7 +44,11 @@ const registerSchema = z
   })
 type RegisterSchemaType = z.infer<typeof registerSchema>
 
-export default function SignUpForm() {
+interface RegisterFormProps {
+  onSuccess?: () => void
+}
+
+export default function SignUpForm({ onSuccess }: RegisterFormProps) {
   const form = useForm<RegisterSchemaType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -58,7 +61,21 @@ export default function SignUpForm() {
   const { isSubmitting } = form.formState
 
   async function onSubmit(values: RegisterSchemaType) {
-    console.log(values)
+    const { success, message } = await signUp(
+      values.email,
+      values.password,
+      values.name
+    )
+
+    if (success) {
+      toast.success(`${message as string} `)
+
+      if (onSuccess) {
+        onSuccess()
+      }
+    } else {
+      toast.error(message as string)
+    }
   }
   return (
     <Card className='overflow-hidden p-0'>
@@ -125,11 +142,7 @@ export default function SignUpForm() {
                 className='w-full cursor-pointer dark:bg-blue-600 dark:text-white'
                 disabled={isSubmitting}
               >
-                {isSubmitting ? (
-                  <Loader2 className='size-4 animate-spin' />
-                ) : (
-                  'Register'
-                )}
+                <LoadingSwap isLoading={isSubmitting}>Sign Up</LoadingSwap>
               </Button>
             </div>
           </form>

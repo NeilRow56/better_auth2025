@@ -22,7 +22,7 @@ function AuthFormLayout() {
             <SignInForm />
           </TabsContent>
           <TabsContent value='register'>
-            <SignUpForm />
+            <SignUpForm onSuccess={() => setActiveTab('login')} />
           </TabsContent>
         </Tabs>
       </div>

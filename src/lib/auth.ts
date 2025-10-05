@@ -5,7 +5,8 @@ import { nextCookies } from 'better-auth/next-js'
 
 export const auth = betterAuth({
   emailAndPassword: {
-    enabled: true
+    enabled: true,
+    requireEmailVerification: false
   },
 
   session: {
