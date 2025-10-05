@@ -6,7 +6,7 @@ export default function AdminPage() {
   return (
     <div className='p-8'>
       <Button type='submit' className='' variant='destructive' asChild>
-        <Link href='/'>Home Page 6</Link>
+        <Link href='/'>Home Page</Link>
       </Button>
     </div>
   )

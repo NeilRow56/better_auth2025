@@ -15,9 +15,10 @@ import {
 } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
 import { SignOutButton } from './sign-out-button'
+import { LoadingSwap } from './loading-swap'
 
 function Header() {
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
   const user = session?.user
 
   return (
@@ -74,11 +75,14 @@ function Header() {
               </DropdownMenu>
             </div>
           ) : (
-            <Link href='/auth/login'>
-              <Button className='bg-teal-500 text-white hover:bg-teal-600'>
-                Login
-              </Button>
-            </Link>
+            <Button
+              asChild
+              className='bg-teal-500 text-white hover:bg-teal-600'
+            >
+              <Link href='/auth/login'>
+                <LoadingSwap isLoading={isPending}>Sign In</LoadingSwap>
+              </Link>
+            </Button>
           )}
         </div>
       </div>
