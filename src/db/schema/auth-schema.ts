@@ -1,8 +1,9 @@
-import { InferSelectModel } from 'drizzle-orm'
+import { InferSelectModel, relations } from 'drizzle-orm'
 import { pgTable, text, timestamp, boolean, integer } from 'drizzle-orm/pg-core'
 
 import { createInsertSchema } from 'drizzle-zod'
 import z from 'zod'
+import { posts } from './post'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -21,6 +22,11 @@ export const user = pgTable('user', {
   banExpires: timestamp('ban_expires'),
   age: integer('age').notNull()
 })
+
+// A user can have many posts
+export const userRelations = relations(user, ({ many }) => ({
+  posts: many(posts)
+}))
 
 const baseSchema = createInsertSchema(user, {
   name: schema =>
