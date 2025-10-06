@@ -39,6 +39,8 @@ export function UserRow({
   const router = useRouter()
   const isSelf = user.id === selfId
 
+  // You would use the impersonateUser function in Better Auth to temporarily take on the identity of another user, typically to troubleshoot issues, provide customer support, or for other administrative tasks without needing their actual login credentials. This allows administrators to see the application from a specific user's perspective, helping them to diagnose problems related to permissions, data, or specific user flows.
+
   function handleImpersonateUser(userId: string) {
     authClient.admin.impersonateUser(
       { userId },
