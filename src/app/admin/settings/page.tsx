@@ -8,6 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { LoadingSuspense } from '@/components/shared/loading-suspense'
+import { ProfileUpdateForm } from './_components/profile-update-form'
 
 export default async function Page() {
   const session = await auth.api.getSession({
@@ -17,13 +18,13 @@ export default async function Page() {
   if (session == null) return redirect('/auth/login')
 
   return (
-    <div className='mx-auto my-6 max-w-4xl px-4'>
+    <div className='mx-auto my-12 max-w-4xl px-4'>
       <div className='mb-8'>
         <Link href='/' className='mb-6 inline-flex items-center'>
           <ArrowLeftIcon className='mr-2 size-4' />
           Back to Home
         </Link>
-        <div className='flex items-center space-x-4'>
+        <div className='mt-12 flex items-center space-x-4'>
           <div className='bg-muted flex size-16 items-center justify-center overflow-hidden rounded-full'>
             {session.user.image ? (
               <Image
@@ -72,7 +73,9 @@ export default async function Page() {
 
         <TabsContent value='profile'>
           <Card>
-            <CardContent>Profile Update Form</CardContent>
+            <CardContent>
+              <ProfileUpdateForm user={session.user} />
+            </CardContent>
           </Card>
         </TabsContent>
 
