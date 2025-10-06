@@ -40,12 +40,13 @@ export default async function Page() {
               <User className='text-muted-foreground size-8' />
             )}
           </div>
-          <div className='flex-1'>
-            <div className='flex items-start justify-between gap-1'>
+          <div className='flex-1 items-center'>
+            <div className='flex items-center justify-between gap-1'>
               <h1 className='text-3xl font-bold'>
                 {session.user.name || 'User Profile'}
               </h1>
-              <Badge>User Role</Badge>
+
+              <Badge className='bg-teal-600'>{session.user.role}</Badge>
             </div>
             <p className='text-muted-foreground'>{session.user.email}</p>
           </div>
