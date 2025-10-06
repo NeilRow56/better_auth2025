@@ -27,7 +27,8 @@ const registerSchema = z
   .object({
     name: z.string().min(3, 'Name must be at least 3 characters'),
     email: z.email('Please enter a valid email address!'),
-    age: z.number().int().min(18).max(99),
+    age: z.number().int(),
+
     password: z.string().min(6, 'Password must be at least 6 characters'),
     confirmPassword: z.string().min(6, {
       message: 'Passwords do not match'
@@ -105,6 +106,7 @@ export default function SignUpForm({ onSuccess }: RegisterFormProps) {
                   type='email'
                 />
               </div>
+
               <div className='grid gap-3'>
                 <FormField
                   control={form.control}
