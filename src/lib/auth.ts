@@ -10,8 +10,12 @@ export const auth = betterAuth({
         type: 'number',
         required: true
       }
+    },
+    deleteUser: {
+      enabled: true
     }
   },
+
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false

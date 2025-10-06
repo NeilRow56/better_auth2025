@@ -2,13 +2,15 @@ import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { auth } from '@/lib/auth'
-import { ArrowLeftIcon, Key, LinkIcon, Trash2, User } from 'lucide-react'
+import { ArrowLeftIcon, Key, Trash2, User } from 'lucide-react'
 import { headers } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { LoadingSuspense } from '@/components/shared/loading-suspense'
 import { ProfileUpdateForm } from './_components/profile-update-form'
+import { SessionManagement } from './_components/session-management'
+import { AccountDeletion } from './_components/account-deletion'
 
 export default async function Page() {
   const session = await auth.api.getSession({
@@ -61,10 +63,7 @@ export default async function Page() {
             <Key />
             <span className='max-sm:hidden'>Sessions</span>
           </TabsTrigger>
-          <TabsTrigger value='accounts'>
-            <LinkIcon />
-            <span className='max-sm:hidden'>Accounts</span>
-          </TabsTrigger>
+
           <TabsTrigger value='danger'>
             <Trash2 />
             <span className='max-sm:hidden'>Danger</span>
@@ -81,12 +80,8 @@ export default async function Page() {
 
         <TabsContent value='sessions'>
           <LoadingSuspense>
-            <SessionsTab />
+            <SessionsTab currentSessionToken={session.session.token} />
           </LoadingSuspense>
-        </TabsContent>
-
-        <TabsContent value='accounts'>
-          <LoadingSuspense>Linked Accounts</LoadingSuspense>
         </TabsContent>
 
         <TabsContent value='danger'>
@@ -94,7 +89,9 @@ export default async function Page() {
             <CardHeader>
               <CardTitle className='text-destructive'>Danger Zone</CardTitle>
             </CardHeader>
-            <CardContent>Account Deletion</CardContent>
+            <CardContent>
+              <AccountDeletion />
+            </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
@@ -102,10 +99,21 @@ export default async function Page() {
   )
 }
 
-async function SessionsTab() {
+async function SessionsTab({
+  currentSessionToken
+}: {
+  currentSessionToken: string
+}) {
+  const sessions = await auth.api.listSessions({ headers: await headers() })
+
   return (
     <Card>
-      <CardContent>Session Management</CardContent>
+      <CardContent>
+        <SessionManagement
+          sessions={sessions}
+          currentSessionToken={currentSessionToken}
+        />
+      </CardContent>
     </Card>
   )
 }
