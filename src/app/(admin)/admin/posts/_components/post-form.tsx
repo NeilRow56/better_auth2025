@@ -6,27 +6,27 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 
-import { postSchema, PostSchema } from '@/db/schema/post'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { InputWithLabel } from '@/components/form/input-with-label'
 import { toast } from 'sonner'
 import SelectBox from '@/components/form/select-box-with-label'
 import { createPost, updatePost } from '@/server/posts'
+import { insertPostSchema, postSchema } from '@/zod-schemas/posts'
 
 type Props = {
-  defaultValues: PostSchema
+  defaultValues: insertPostSchema
   categoriesData: { id: number; name: string }[] | null
   tagsData: { id: number; name: string }[] | null
 }
 export function PostForm({ defaultValues, categoriesData, tagsData }: Props) {
   const router = useRouter()
 
-  const form = useForm<PostSchema>({
+  const form = useForm<insertPostSchema>({
     resolver: zodResolver(postSchema),
     defaultValues
   })
 
-  const onSubmit: SubmitHandler<PostSchema> = async data => {
+  const onSubmit: SubmitHandler<insertPostSchema> = async data => {
     let response
     if (data.mode === 'create') {
       response = await createPost(data)
@@ -45,12 +45,15 @@ export function PostForm({ defaultValues, categoriesData, tagsData }: Props) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-        <InputWithLabel<PostSchema> fieldTitle='Title' nameInSchema='title' />
-        <InputWithLabel<PostSchema>
+        <InputWithLabel<insertPostSchema>
+          fieldTitle='Title'
+          nameInSchema='title'
+        />
+        <InputWithLabel<insertPostSchema>
           fieldTitle='Short Description'
           nameInSchema='shortDescription'
         />
-        <InputWithLabel<PostSchema>
+        <InputWithLabel<insertPostSchema>
           fieldTitle='Content'
           nameInSchema='content'
         />
