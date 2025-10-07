@@ -41,6 +41,18 @@ function Header() {
             >
               Settings
             </Link>
+            <Link
+              className='text-sm font-medium hover:text-teal-600'
+              href={'/admin/posts'}
+            >
+              Posts
+            </Link>
+            <Link
+              className='text-sm font-medium hover:text-teal-600'
+              href={'/admin/categories'}
+            >
+              Categories
+            </Link>
           </nav>
         </div>
         <div className='flex items-center gap-6'>
