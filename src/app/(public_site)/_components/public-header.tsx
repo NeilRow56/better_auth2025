@@ -4,7 +4,6 @@ import { Package } from 'lucide-react'
 import Link from 'next/link'
 
 import { useSession } from '@/lib/auth-client'
-import { Avatar, AvatarFallback } from '../ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,12 +11,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '../ui/dropdown-menu'
-import { Button } from '../ui/button'
-import { SignOutButton } from './sign-out-button'
-import { LoadingSwap } from './loading-swap'
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { SignOutButton } from '@/components/shared/sign-out-button'
+import { LoadingSwap } from '@/components/shared/loading-swap'
 
-function Header() {
+function PublicHeader() {
   const { data: session, isPending } = useSession()
   const user = session?.user
 
@@ -37,15 +37,21 @@ function Header() {
           <nav className='ml-6 flex items-center gap-6'>
             <Link
               className='text-sm font-medium hover:text-teal-600'
-              href={'/admin/settings'}
+              href={'/search'}
             >
-              Settings
+              Search
             </Link>
             <Link
               className='text-sm font-medium hover:text-teal-600'
-              href={'/admin/posts'}
+              href={'/posts'}
             >
               Posts
+            </Link>
+            <Link
+              className='text-sm font-medium hover:text-teal-600'
+              href={'/categories'}
+            >
+              Categories
             </Link>
           </nav>
         </div>
@@ -96,4 +102,4 @@ function Header() {
   )
 }
 
-export default Header
+export default PublicHeader

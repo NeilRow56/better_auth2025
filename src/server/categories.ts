@@ -3,6 +3,7 @@
 import { db } from '@/db'
 
 import { categories, user } from '@/db/schema'
+import { executeQuery } from '@/db/utils/executeQuery'
 import { auth } from '@/lib/auth'
 import { actionClient } from '@/lib/safe-actions'
 import {
@@ -32,19 +33,35 @@ export async function getCategoryTwo(id: number) {
 
   return category[0]
 }
-
 export async function getUserCategories(userId: string) {
-  const categoriesByUserId = await db
-    .select({
-      id: categories.id,
-      name: categories.name,
-      userId: categories.userId
-    })
-    .from(categories)
-    .where(and(eq(categories.userId, userId)))
+  return executeQuery({
+    queryFn: async () =>
+      await db
+        .select({
+          id: categories.id,
+          name: categories.name,
+          userId: categories.userId
+        })
+        .from(categories)
+        .where(and(eq(categories.userId, userId))),
 
-  return categoriesByUserId
+    serverErrorMessage: 'getUserCategories',
+    isProtected: false
+  })
 }
+
+// export async function getUserCategories(userId: string) {
+//   const categoriesByUserId = await db
+//     .select({
+//       id: categories.id,
+//       name: categories.name,
+//       userId: categories.userId
+//     })
+//     .from(categories)
+//     .where(and(eq(categories.userId, userId)))
+
+//   return categoriesByUserId
+// }
 
 export const existingCategory = async (name: string, userId: string) => {
   try {

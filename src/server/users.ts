@@ -2,6 +2,7 @@
 
 import { db } from '@/db'
 import { user } from '@/db/schema'
+import { executeQuery } from '@/db/utils/executeQuery'
 import { auth } from '@/lib/auth'
 import { eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
@@ -82,4 +83,33 @@ export async function getUserDetails(id: string) {
   const userDetails = await db.select().from(user).where(eq(user.id, id))
 
   return userDetails[0]
+}
+
+export async function getUser(userId: string) {
+  return executeQuery({
+    queryFn: async () =>
+      await db.query.user.findFirst({
+        columns: { name: true, email: true, id: true },
+        where: eq(user.id, userId)
+      }),
+    serverErrorMessage: 'getUser',
+    isProtected: false
+  })
+}
+
+export async function getCurrentUser() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  const sessionUserId = session?.user?.id
+
+  if (!sessionUserId) return null
+
+  return executeQuery({
+    queryFn: async () =>
+      await db.query.user.findFirst({ where: eq(user.id, sessionUserId) }),
+    serverErrorMessage: 'getCurrentUser',
+    isProtected: false
+  })
 }

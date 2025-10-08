@@ -1,7 +1,9 @@
 import { pgTable, text, timestamp, boolean, integer } from 'drizzle-orm/pg-core'
 
 import { posts } from './post'
-import { relations } from 'drizzle-orm'
+import { InferSelectModel, relations } from 'drizzle-orm'
+import { createInsertSchema } from 'drizzle-zod'
+import { z } from 'zod'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -28,36 +30,36 @@ export const userRelations = relations(user, ({ many }) => ({
 
 export type User = typeof user.$inferSelect
 
-// const baseSchema = createInsertSchema(user, {
-//   name: schema =>
-//     schema.min(3, { error: 'Name must be at least 3 characters' }),
-//   age: z.coerce
-//     .number()
-//     .min(18, { error: 'Age must be a minimum of 18 and a maximimum of 99' })
-//     .max(99),
-//   email: z.email().min(1, { error: 'Invalid email format' })
-// }).pick({ name: true, age: true, email: true })
+const baseSchema = createInsertSchema(user, {
+  name: schema =>
+    schema.min(3, { error: 'Name must be at least 3 characters' }),
+  age: z.coerce
+    .number()
+    .min(18, { error: 'Age must be a minimum of 18 and a maximimum of 99' })
+    .max(99),
+  email: z.email().min(1, { error: 'Invalid email format' })
+}).pick({ name: true, age: true, email: true })
 
-// export const userSchema = z.union([
-//   z.object({
-//     mode: z.literal('signUp'),
-//     email: baseSchema.shape.email,
-//     name: baseSchema.shape.name,
-//     age: baseSchema.shape.age
-//   }),
-//   z.object({
-//     mode: z.literal('signIn'),
-//     email: baseSchema.shape.email
-//   }),
-//   z.object({
-//     mode: z.literal('update'),
-//     name: baseSchema.shape.name,
-//     age: baseSchema.shape.age,
-//     id: z.string().min(1)
-//   })
-// ])
-// export type UserSchema = z.infer<typeof userSchema>
-// export type SelectUserModel = InferSelectModel<typeof user>
+export const userSchema = z.union([
+  z.object({
+    mode: z.literal('signUp'),
+    email: baseSchema.shape.email,
+    name: baseSchema.shape.name,
+    age: baseSchema.shape.age
+  }),
+  z.object({
+    mode: z.literal('signIn'),
+    email: baseSchema.shape.email
+  }),
+  z.object({
+    mode: z.literal('update'),
+    name: baseSchema.shape.name,
+    age: baseSchema.shape.age,
+    id: z.string().min(1)
+  })
+])
+export type UserSchema = z.infer<typeof userSchema>
+export type SelectUserModel = InferSelectModel<typeof user>
 
 export const session = pgTable('session', {
   id: text('id').primaryKey(),

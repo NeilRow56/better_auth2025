@@ -133,7 +133,9 @@ export function UserRow({
           {user.role}
         </Badge>
       </TableCell>
-      <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
+      <TableCell suppressHydrationWarning>
+        {new Date(user.createdAt).toLocaleDateString()}
+      </TableCell>
       <TableCell>
         {!isSelf && (
           <AlertDialog>

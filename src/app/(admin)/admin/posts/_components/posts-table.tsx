@@ -1,8 +1,6 @@
 import { EllipsisVertical, Eye, Pencil } from 'lucide-react'
 import Link from 'next/link'
 
-import { DeletePostButton } from '@/app/(admin)/admin/posts/_components/delete-post-button'
-import { getCategories } from '@/app/queries'
 import { Button } from '@/components/ui/button'
 import {
   Popover,
@@ -17,14 +15,26 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { SelectPostModel } from '@/db/schema/post'
+import { SelectPostModel } from '@/zod-schemas/posts'
+import { getUserCategories } from '@/server/categories'
+import { DeletePostButton } from './delete-post-button'
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 type Props = {
   rows: SelectPostModel[] | null
+
   columns: string[]
 }
 export async function PostsTable({ rows, columns }: Props) {
-  const categoriesData = (await getCategories()) || []
+  const session = await auth.api.getSession({ headers: await headers() })
+
+  if (session == null) return redirect('/auth/login')
+
+  const userId = session.user.id
+
+  const categoriesData = (await getUserCategories(userId)) || []
 
   return (
     <Table>

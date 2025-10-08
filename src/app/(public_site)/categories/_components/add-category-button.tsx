@@ -3,8 +3,9 @@
 import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
-import AddCategoryDialog from './add-category-dialog'
+
 import { User } from '@/db/schema/auth-schema'
+import AddCategoryDialog from './add-category-dialog'
 
 interface CategoryButtonProps {
   user: User // You must have a user to start a customer - so it is not optional

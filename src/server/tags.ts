@@ -1,8 +1,11 @@
 import { db } from '@/db'
-import { tags } from '@/db/schema'
+
+import { executeQuery } from '@/db/utils/executeQuery'
 
 export async function getTags() {
-  const allTags = await db.select().from(tags)
-
-  return allTags
+  return executeQuery({
+    queryFn: async () => await db.query.tags.findMany(),
+    serverErrorMessage: 'getTags',
+    isProtected: false
+  })
 }

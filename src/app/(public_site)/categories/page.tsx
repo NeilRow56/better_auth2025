@@ -10,11 +10,12 @@ import { and, asc, count, eq } from 'drizzle-orm'
 import { SkeletonArray } from '@/components/shared/skeleton'
 import { SkeletonCustomerCard } from '@/components/shared/skeleton-customer-card'
 import { EmptyState } from '@/components/shared/empty-state'
+
 import CategoriesTable from './_components/categories-table'
 import { AddCategoryButton } from './_components/add-category-button'
 
 export const metadata = {
-  title: 'Client Search'
+  title: 'Categories'
 }
 
 export default async function Categories() {

@@ -19,7 +19,6 @@ import { InputWithLabel } from '@/components/form/input-with-label'
 import { Button } from '@/components/ui/button'
 import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { Category } from '../columns'
 
 import { User } from '@/db/schema/auth-schema'
 import { saveCategoryAction } from '@/server/categories'
@@ -27,6 +26,7 @@ import {
   insertCategorySchema,
   insertCategorySchemaType
 } from '@/zod-schemas/categories'
+import { Category } from '../columns'
 
 type Props = {
   open: boolean
@@ -88,7 +88,7 @@ function AddCategoryDialog({ setOpen, open, category, user }: Props) {
       console.log(error)
 
       toast.error(
-        `Failed to ${category ? 'update' : 'add'} category. Category may alreay exist`
+        `Failed to ${category ? 'update' : 'add'} category. Category may already exist`
       )
     }
   })

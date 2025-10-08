@@ -2,9 +2,10 @@
 
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { BetterAuthActionButton } from './auth/login/_components/better-auth-action-button'
+import { BetterAuthActionButton } from '../auth/login/_components/better-auth-action-button'
 import { authClient, useSession } from '@/lib/auth-client'
 import { useEffect, useState } from 'react'
+import { ChevronRightIcon } from 'lucide-react'
 
 export default function Home() {
   const [hasAdminPermission, setHasAdminPermission] = useState(false)
@@ -56,6 +57,17 @@ export default function Home() {
           </>
         )}
       </div>
+      <main>
+        <div className='flex items-center justify-between'>
+          <h1 className='py-5 text-2xl font-bold'>Latest Posts</h1>
+          <Button variant='ghost' asChild>
+            <Link href='/posts'>
+              View All
+              <ChevronRightIcon />
+            </Link>
+          </Button>
+        </div>
+      </main>
     </div>
   )
 }
